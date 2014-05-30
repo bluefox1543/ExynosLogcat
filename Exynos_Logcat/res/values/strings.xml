@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="app_name">Exynos_Logcat</string>
+	<string name="filter_menu">필터 (%s)</string>
+    <string name="filter_menu_empty">필터</string>
+    <string name="saving_log">로그를 저장합니다: %s, 기다려주세요</string>
+    <string name="sel_level">로그 레벨 선택</string>
+    <string name="sel_type">로그 타입 선택</string>
+    <string name="sel_format">로그 포맷 선택</string>
+    <string name="sum_level">로그의 레벨을 선택합니다.</string>
+    <string name="sum_format">로그의 포맷을 선택합니다.</string>
+    <string name="sum_type">로그의 타입을 선택합니다.</string>
+    <string name="log_prefs_title">Log Display</string>
+    <string name="filter_dialog_text">로그를 필터링 할 문자열을 적어주세요.</string>
+    <string name="pattern_error_text">알 수 없는 정규식입니다.</string>
+    <string name="apply_as_regexp">정규식을 적용할까요?</string>
+    
+</resources>

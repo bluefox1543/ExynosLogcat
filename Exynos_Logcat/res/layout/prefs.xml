@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/log_prefs_title" >
+
+        <ListPreference
+            android:defaultValue="V"
+            android:entries="@array/level_elements"
+            android:entryValues="@array/level_values"
+            android:key="level"
+            android:summary="@string/sum_level"
+            android:title="@string/sel_level" />
+
+        <ListPreference
+            android:defaultValue="BRIEF"
+            android:entries="@array/format_elements"
+            android:entryValues="@array/format_values"
+            android:key="format"
+            android:summary="@string/sum_format"
+            android:title="@string/sel_format" />
+
+        <ListPreference
+            android:defaultValue="MAIN"
+            android:entries="@array/type_elements"
+            android:entryValues="@array/type_values"
+            android:key="type"
+            android:summary="@string/sum_type"
+            android:title="@string/sel_type" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
