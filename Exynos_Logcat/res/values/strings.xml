@@ -14,5 +14,7 @@
     <string name="filter_dialog_text">로그를 필터링 할 문자열을 적어주세요.</string>
     <string name="pattern_error_text">알 수 없는 정규식입니다.</string>
     <string name="apply_as_regexp">정규식을 적용할까요?</string>
+    <string name="timer_saving_info">일정 시간동안 로그를 저장하시려면 초 단위의 시간을 입력해 주세요.</string>
+    <string name="timer_error_text">저장 시간을 다시 확인해 주세요.</string>
     
 </resources>

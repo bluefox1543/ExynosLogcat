@@ -180,6 +180,7 @@ public class LogcatMain extends ListActivity {
 		mPlay = true;
 
 		executor.execute(new Runnable() {
+			@Override
 			public void run() {
 				mLogcat = new LogcatProcess(LogcatMain.this, mHandler);
 				mLogcat.start();
@@ -313,6 +314,7 @@ public class LogcatMain extends ListActivity {
 		Log.d("",path.getPath() + File.separator + "Exynos_Logcat_" + LogDateFormat.format(new Date()) + ".txt");
 
 		executor.execute(new Runnable() {
+			@Override
 			public void run() {
 				String content = dump();
 
@@ -368,6 +370,7 @@ public class LogcatMain extends ListActivity {
 		}
 	}
 
+	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case FILTER_DIALOG:

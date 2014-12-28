@@ -28,6 +28,30 @@
         android:inputType="text"
         android:lines="1"
         android:singleLine="true" />
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:autoLink="all"
+        android:text="@string/timer_saving_info" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/timer_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:inputType="text"
+        android:lines="1"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/pattern_error_text"

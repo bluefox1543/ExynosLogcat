@@ -385,6 +385,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		mPlay = true;
 
 		executor.execute(new Runnable() {
+			@Override
 			public void run() {
 				mLogcat = new LogcatProcess(LogOverlayService.this, mHandler);
 				mLogcat.start();
@@ -435,6 +436,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		Log.d("",path.getPath() + File.separator + "Exynos_Logcat_" + LogcatMain.LogDateFormat.format(new Date()) + ".txt");
 
 		executor.execute(new Runnable() {
+			@Override
 			public void run() {
 				String content = dump();
 

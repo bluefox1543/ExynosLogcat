@@ -28,8 +28,8 @@
             android:name="PreferencesActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
 
-        <service android:name=".LogOverlayService" >
-        </service>
+        <service android:name=".LogOverlayService" />
+        <service android:name=".LogSavingService" />
     </application>
 
 </manifest>
