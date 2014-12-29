@@ -10,3 +10,5 @@ This is an Odroid-U2 Android project. i refer to alogcat. https://github.com/Sme
 <br><br>
 2014.12.29 Updates<br>
 1. Filter Dialog > Add timer record function
+2014.12.30 Updates<br>
+1. LogOverlayService > DefaultSize refair
