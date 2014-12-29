@@ -7,3 +7,6 @@ This is an Odroid-U2 Android project. i refer to alogcat. https://github.com/Sme
 1. build this project and launch your device<br>
 2. run adb shell for your device<br>
 3. "pm grant com.sec.apps.exynos_logcat android.permission.READ_LOGS"<br>
+<br><br>
+2014.12.29 Updates<br>
+1. Filter Dialog > Add timer record function
