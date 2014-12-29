@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +15,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,6 +81,32 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		super.onCreate();
 
 		wm = (WindowManager)getSystemService(WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		int width=display.getWidth();
+		int height=display.getHeight();
+
+		if(Build.VERSION.SDK_INT >= 14){
+			try {
+				Point realSize = new Point();
+				Display.class.getMethod("getRealSize", Point.class).invoke(display, realSize);
+				width = realSize.x;
+				height = realSize.y;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		int btnWidth = width / 15;
+		int btnHeight = height / 15;
+		int btnSize = (btnWidth<btnHeight)?btnWidth:btnHeight;
 
 		mLinearLayout = new LinearLayout(this);
 		mLinearLayout.setBackgroundColor(0x99ffffff);
@@ -84,11 +114,11 @@ public class LogOverlayService extends Service implements OnTouchListener {
 
 		TopMenuLayout = new RelativeLayout(this);
 		TopMenuLayout.setBackgroundColor(0x99ffffff);
-		TopMenuLayout.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,40));
+		TopMenuLayout.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,btnSize));
 		TopMenuLayout.setGravity(Gravity.CENTER | Gravity.TOP);
 
 		moveBtn = new Button(this);
-		RelativeLayout.LayoutParams moveParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams moveParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		moveParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		moveParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		moveBtn.setLayoutParams(moveParam);
@@ -97,7 +127,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		moveBtn.setOnTouchListener(this);
 
 		PlayBtn = new Button(this);
-		RelativeLayout.LayoutParams PlayParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams PlayParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		PlayParam.addRule(RelativeLayout.RIGHT_OF, MOVE_ID);
 		PlayParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		PlayBtn.setLayoutParams(PlayParam);
@@ -106,7 +136,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		PlayBtn.setOnTouchListener(this);
 
 		ReturnBtn = new Button(this);
-		RelativeLayout.LayoutParams ReturnParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams ReturnParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		ReturnParam.addRule(RelativeLayout.RIGHT_OF, PLAY_ID);
 		ReturnParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		ReturnBtn.setLayoutParams(ReturnParam);
@@ -115,7 +145,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		ReturnBtn.setOnTouchListener(this);
 
 		ClearBtn = new Button(this);
-		RelativeLayout.LayoutParams ClearParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams ClearParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		ClearParam.addRule(RelativeLayout.RIGHT_OF, RETURN_ID);
 		ClearParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		ClearBtn.setLayoutParams(ClearParam);
@@ -124,7 +154,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		ClearBtn.setOnTouchListener(this);
 
 		SaveBtn = new Button(this);
-		RelativeLayout.LayoutParams SaveParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams SaveParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		SaveParam.addRule(RelativeLayout.RIGHT_OF,CLEAR_ID);
 		SaveParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		SaveBtn.setLayoutParams(SaveParam);
@@ -133,7 +163,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		SaveBtn.setOnTouchListener(this);
 
 		SetupBtn = new Button(this);
-		RelativeLayout.LayoutParams SetupParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams SetupParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		SetupParam.addRule(RelativeLayout.RIGHT_OF,SAVE_ID);
 		SetupParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		SetupBtn.setLayoutParams(SetupParam);
@@ -141,7 +171,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		SetupBtn.setOnTouchListener(this);
 
 		closeBtn = new Button(this);
-		RelativeLayout.LayoutParams closeParam = new RelativeLayout.LayoutParams(40,40);
+		RelativeLayout.LayoutParams closeParam = new RelativeLayout.LayoutParams(btnSize,btnSize);
 		closeParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		closeParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		closeBtn.setLayoutParams(closeParam);
@@ -176,6 +206,10 @@ public class LogOverlayService extends Service implements OnTouchListener {
 
 		mPrefs = new Preferences(this);
 		OverlaySize size = mPrefs.getOverlaySize();
+		if(size.isDefaultSize()){
+			size.setWidth(width / 2);
+			size.setHeight(height / 2);
+		}
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams(size.getWidth(),size.getHeight(),WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,0|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,PixelFormat.TRANSLUCENT);
 		params.gravity = Gravity.CENTER | Gravity.TOP;
 		params.x = 0;
@@ -194,7 +228,7 @@ public class LogOverlayService extends Service implements OnTouchListener {
 		super.onDestroy();
 		if(wm == null)
 			wm = (WindowManager)getSystemService(WINDOW_SERVICE);
-		mPrefs.setOverlaySize(new OverlaySize(mLinearLayout.getWidth(), mLinearLayout.getHeight()));
+		mPrefs.setOverlaySize(new OverlaySize(mLinearLayout.getWidth(), mLinearLayout.getHeight(),false));
 		wm.removeView(mLinearLayout);
 	}
 

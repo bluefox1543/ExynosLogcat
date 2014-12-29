@@ -15,6 +15,7 @@ public class Preferences {
 	public static final String FILTER_PATTERN_KEY = "filterPattern";
 	public static final String SIZE_W_KEY = "sizew";
 	public static final String SIZE_H_KEY = "sizeh";
+	public static final String SIZE_IS_DEFAULT = "sized";
 
 	private SharedPreferences sharedPrefs = null;
 
@@ -120,11 +121,12 @@ public class Preferences {
 	}
 	
 	public OverlaySize getOverlaySize(){
-		return new OverlaySize(getInt(SIZE_W_KEY, 240),getInt(SIZE_H_KEY, 320));
+		return new OverlaySize(getInt(SIZE_W_KEY, 240),getInt(SIZE_H_KEY, 320),getBoolean(SIZE_IS_DEFAULT, true));
 	}
 	
 	public void setOverlaySize(OverlaySize size){
 		setInt(SIZE_W_KEY, size.getWidth());
 		setInt(SIZE_H_KEY, size.getHeight());
+		setBoolean(SIZE_IS_DEFAULT, false);
 	}
 }
